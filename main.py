@@ -62,7 +62,7 @@ def postNew (request: Request):
     )
 
 @app.post("/post/new")
-def postNew(writer:str = Form(...), title:str= Form(...), content:str= Form(...), db:Session = Depends(get_db)):
+def postNew(request: Request,writer:str = Form(...), title:str= Form(...), content:str= Form(...), db:Session = Depends(get_db)):
     query = text("""
         INSERT INTO post(writer, title, content)
         VALUES(:writer, :title, :content)
@@ -70,9 +70,25 @@ def postNew(writer:str = Form(...), title:str= Form(...), content:str= Form(...)
     db.execute(query, {"writer":writer, "title":title, "content":content})
     db.commit()
 
-    return RedirectResponse("/post", status_code=302)
+    return templates.TemplateResponse(
+         request=request,
+         name="post/alert.html",
+         context={
+            "msg":"글 정보를 추가했습니다.",
+            "url":"/post"
+        })
 
 @app.post("/post/delete/{num}")
+def deletePost(num: int, db: Session = Depends(get_db)):
+    query = text("""
+        DELETE FROM post
+        WHERE num = :num
+    """)
+    db.execute(query, {"num": num})
+    db.commit()
+    return RedirectResponse("/post", status_code=302)
+
+@app.get("/post/delete/{num}")
 def deletePost(num: int, db: Session = Depends(get_db)):
     query = text("""
         DELETE FROM post
