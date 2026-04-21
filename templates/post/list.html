@@ -35,7 +35,8 @@
                     <th>내용</th>
                     <th>작성일</th>
                     <th>삭제</th>
-                    <th>삭제</th>
+                    <th>수정</th>
+                    <th>테스트삭제</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,6 +54,9 @@
                         <form method="post" action="/post/delete/{{ post.num }}" style="display:inline;">
                             <button type="submit" class="btn btn-danger btn-sm">삭제</button>
                         </form>
+                    </td>
+                      <td>
+                        <a href="/post/edit/{{ post.num }}">수정</a>
                     </td>
                     <td>
                         <a href="/post/delete/{{ post.num }}">삭제</a>
