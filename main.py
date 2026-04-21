@@ -102,8 +102,7 @@ def postNew(request: Request, writer: str = Form(...), title: str = Form(...), c
         }
     )
 
-
-
+#내가 ai로 물어보면서 작성
 @app.post("/post/delete/{num}")
 def deletePost(num: int, db: Session = Depends(get_db)):
     query = text("""
@@ -114,6 +113,7 @@ def deletePost(num: int, db: Session = Depends(get_db)):
     db.commit()
     return RedirectResponse("/post", status_code=302)
 
+# 선생님거 보면서 따라한 삭제
 @app.get("/post/delete/{num}")
 def deletePost(num: int, db: Session = Depends(get_db)):
     query = text("""
